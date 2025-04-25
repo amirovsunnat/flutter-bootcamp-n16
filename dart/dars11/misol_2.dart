@@ -33,6 +33,7 @@ void main(List<String> args) {
     "anor",
   ];
 
+
   // print(mevalar.indexWhere((meva) => meva.startsWith("a")));
 
   print("apelsinning indexi: ${mevalar.lastIndexOf("olma", 2)}");
