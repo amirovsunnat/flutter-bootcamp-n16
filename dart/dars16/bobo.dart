@@ -1,6 +1,6 @@
 class Bobo {
   String ism;
-  
+
   Bobo({required this.ism});
 }
 
