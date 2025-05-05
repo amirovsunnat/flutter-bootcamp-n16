@@ -1,27 +1,46 @@
 import 'dart:async';
 
-// kechiktirilgan vazifa (event queue uchun)
-void kechikkanVazifa(String nom, int millisekund) {
-  Future.delayed(Duration(milliseconds: millisekund), () {
-    print('$nom $millisekund ms dan keyin bajarildi (Hodisa Navbati)');
-  });
-}
-
-// Mikrovazifa (microtask queue uchun)
-void mikroVazifa(String nom) {
-  scheduleMicrotask(() {
-    print('$nom bajarildi (Mikrovazifa Navbati)');
-  });
-}
-
 void main() {
-  print('Boshlash: Dastur boshlandi');
+  print('1');
 
+  Future(() {
+    print('2 (future)');
+    scheduleMicrotask(() {
+      print('3 (microtask inside future)');
+    });
 
-  kechikkanVazifa('Kechikkan Vazifa 1', 100);
+    Future(() {
+      print('4 (nested future inside future)');
+    }).then((_) {
+      print('5 (then after nested future)');
+    });
+  }).then((_) {
+    print('6 (then after first future)');
+  });
 
-  print('Sinxron: Bu darhol chiqadi');
+  scheduleMicrotask(() {
+    print('7 (microtask)');
+    Future(() {
+      print('8 (future inside microtask)');
+    }).then((_) {
+      print('9 (then after future inside microtask)');
+    });
+  });
 
-  print('Tugash: Dastur tugadi');
-  mikroVazifa('Mikrovazifa 1');
+  Future.delayed(Duration.zero, () {
+    print('10 (delayed future)');
+  });
+
+  Future(() async {
+    print('11 (async future start)');
+    await Future(() {
+      print('12 (awaited future)');
+    });
+    print('13 (after await)');
+    scheduleMicrotask(() {
+      print('14 (microtask after await)');
+    });
+  });
+
+  print('15');
 }
